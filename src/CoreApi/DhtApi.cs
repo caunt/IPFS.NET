@@ -32,7 +32,7 @@ namespace Ipfs.Http
         public async Task<IEnumerable<Peer>> FindProvidersAsync(Cid id, int limit = 20, Action<Peer> providerFound = null, CancellationToken cancel = default(CancellationToken))
         {
             // TODO: providerFound action
-            var stream = await ipfs.PostDownloadAsync("dht/findprovs", cancel, id, $"num-providers={limit}");
+            var stream = await ipfs.DownloadAsync("dht/findprovs", cancel, id, $"num-providers={limit}");
             return ProviderFromStream(stream, limit);
         }
 

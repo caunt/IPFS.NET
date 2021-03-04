@@ -26,7 +26,7 @@ namespace Ipfs.Http
         /// <inheritdoc />
         public async Task<IEnumerable<PingResult>> PingAsync(MultiHash peer, int count = 10, CancellationToken cancel = default(CancellationToken))
         {
-            var stream = await PostDownloadAsync("ping", cancel,
+            var stream = await DownloadAsync("ping", cancel,
                 peer.ToString(),
                 $"count={count.ToString(CultureInfo.InvariantCulture)}");
             return PingResultFromStream(stream);
@@ -35,7 +35,7 @@ namespace Ipfs.Http
         /// <inheritdoc />
         public async Task<IEnumerable<PingResult>> PingAsync(MultiAddress address, int count = 10, CancellationToken cancel = default(CancellationToken))
         {
-            var stream = await PostDownloadAsync("ping", cancel,
+            var stream = await DownloadAsync("ping", cancel,
                 address.ToString(),
                 $"count={count.ToString(CultureInfo.InvariantCulture)}");
             return PingResultFromStream(stream);

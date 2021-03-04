@@ -71,7 +71,7 @@ namespace Ipfs.Http
 
         public async Task SubscribeAsync(string topic, Action<IPublishedMessage> handler, CancellationToken cancellationToken)
         {
-            var messageStream = await ipfs.PostDownloadAsync("pubsub/sub", cancellationToken, topic);
+            var messageStream = await ipfs.DownloadAsync("pubsub/sub", cancellationToken, topic);
             var sr = new StreamReader(messageStream);
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed

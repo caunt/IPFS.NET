@@ -328,40 +328,6 @@ namespace Ipfs.Http
         }
 
         /// <summary>
-        ///  Post an <see href="https://ipfs.io/docs/api/">IPFS API command</see> returning a stream.
-        /// </summary>
-        /// <param name="command">
-        ///   The <see href="https://ipfs.io/docs/api/">IPFS API command</see>, such as
-        ///   <see href="https://ipfs.io/docs/api/#apiv0filels">"file/ls"</see>.
-        /// </param>
-        /// <param name="cancel">
-        ///   Is used to stop the task.  When cancelled, the <see cref="TaskCanceledException"/> is raised.
-        /// </param>
-        /// <param name="arg">
-        ///   The optional argument to the command.
-        /// </param>
-        /// <param name="options">
-        ///   The optional flags to the command.
-        /// </param>
-        /// <returns>
-        ///   A <see cref="Stream"/> containing the command's result.
-        /// </returns>
-        /// <exception cref="HttpRequestException">
-        ///   When the IPFS server indicates an error.
-        /// </exception>
-        public async Task<Stream> PostDownloadAsync(string command, CancellationToken cancel, string arg = null, params string[] options)
-        {
-            var url = BuildCommand(command, arg, options);
-            if (log.IsDebugEnabled)
-                log.Debug("POST " + url.ToString());
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
-
-            var response = await Api().SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
-            await ThrowOnErrorAsync(response);
-            return await response.Content.ReadAsStreamAsync();
-        }
-
-        /// <summary>
         ///  Perform an <see href="https://ipfs.io/docs/api/">IPFS API command</see> returning a
         ///  <see cref="Stream"/>.
         /// </summary>
@@ -388,8 +354,10 @@ namespace Ipfs.Http
         {
             var url = BuildCommand(command, arg, options);
             if (log.IsDebugEnabled)
-                log.Debug("GET " + url.ToString());
-            var response = await Api().GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancel);
+                log.Debug("POST " + url.ToString());
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+
+            var response = await Api().SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
             await ThrowOnErrorAsync(response);
             return await response.Content.ReadAsStreamAsync();
         }
@@ -421,8 +389,9 @@ namespace Ipfs.Http
         {
             var url = BuildCommand(command, arg, options);
             if (log.IsDebugEnabled)
-                log.Debug("GET " + url.ToString());
-            var response = await Api().GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancel);
+                log.Debug("POST " + url.ToString());
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            var response = await Api().SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
             await ThrowOnErrorAsync(response);
             return await response.Content.ReadAsByteArrayAsync();
         }
